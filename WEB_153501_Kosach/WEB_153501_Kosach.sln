@@ -5,6 +5,8 @@ VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WEB_153501_Kosach", "WEB_153501_Kosach\WEB_153501_Kosach.csproj", "{A3B555AC-54F5-4769-A1FB-5D88E8F80A6B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WEB_153501_Kosach.Domain", "WEB_153501_Kosach.Domain\WEB_153501_Kosach.Domain.csproj", "{C54DB375-EF3E-4A0F-BC7B-66ED4BE5933B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{A3B555AC-54F5-4769-A1FB-5D88E8F80A6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A3B555AC-54F5-4769-A1FB-5D88E8F80A6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3B555AC-54F5-4769-A1FB-5D88E8F80A6B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C54DB375-EF3E-4A0F-BC7B-66ED4BE5933B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C54DB375-EF3E-4A0F-BC7B-66ED4BE5933B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C54DB375-EF3E-4A0F-BC7B-66ED4BE5933B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C54DB375-EF3E-4A0F-BC7B-66ED4BE5933B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
