@@ -7,11 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WEB_153501_Kosach.Domain\WEB_153501_Kosach.Domain.csproj" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.9" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
+    <ProjectReference Include="..\WEB_153501_Kosach.Domain\WEB_153501_Kosach.Domain.csproj" />
   </ItemGroup>
 
 </Project>

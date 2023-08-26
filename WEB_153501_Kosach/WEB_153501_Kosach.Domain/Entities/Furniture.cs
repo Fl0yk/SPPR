@@ -10,8 +10,8 @@ namespace WEB_153501_Kosach.Domain.Entities
     {
         public int Id { get; set; }
         public string Name { get; set; } = null!;
-        public string Description { get; set; } = null!;
-        public Category? CategoryId { get; set; }
+        public decimal Price { get; set; }
+        public FurnitureCategory? CategoryId { get; set; }
 
         public string? Image { get; set; }
     }

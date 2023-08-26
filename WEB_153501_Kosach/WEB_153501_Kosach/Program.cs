@@ -1,7 +1,12 @@
+using WEB_153501_Kosach.Services.FurnitureCategoryService;
+using WEB_153501_Kosach.Services.FurnitureServices;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddTransient<IFurnitureCategoryService, MemoryFurnitureCategoryService>();
+builder.Services.AddScoped<IFurnitureService, MemoryFurnitureService>();
 
 var app = builder.Build();
 

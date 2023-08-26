@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WEB_153501_Kosach.Domain.Entities
 {
-    public class Category
+    public class FurnitureCategory
     {
         public int Id { get; set; }
         public string Name { get; set; } = null!;
