@@ -1,0 +1,91 @@
+﻿@model ListModel<Furniture>
+
+@{
+    ViewBag.Title = "View";
+    
+    var request = ViewContext.HttpContext.Request;
+    var returnUrl = request.Path + request.QueryString.ToUriComponent();
+    var categories = ViewData["Categories"] as List<FurnitureCategory>;
+
+    string? category = request.Query["category"].ToString();
+
+    int prev = Model.CurrentPage == 1 ? 1 : Model.CurrentPage - 1;
+
+    int next = Model.CurrentPage == Model.TotalPages
+                                    ? Model.TotalPages
+                                    : Model.CurrentPage + 1;
+
+}
+
+
+<h1>Наш ассортимент:</h1>
+
+<!-- выбор категории -->
+<div class="col-2 border-2">
+    <ul class="nav ">
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle"
+               data-bs-toggle="dropdown"
+               href="#"
+               role="button"
+               aria-expanded="false">
+                @ViewData["currentCategory"]
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                    <a class="dropdown-item"
+                       asp-controller="furniture"
+                       asp-route-category=@null>Все</a>
+                </li>
+                @foreach (var item in categories)
+                { 
+                    <li>
+                        <a class="dropdown-item"
+                       asp-controller="furniture"
+                       asp-route-category="@item.NormalizedName">
+                            @item.Name
+                        </a>
+                    </li>
+                }
+            </ul>
+        </li>
+    </ul>
+</div><!-- выбор категории -->
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    @foreach(var item in Model.Items)
+    {
+        <div class="col">
+            <div class="card text-center">
+                <img src="@item.Image" class="card-img-top" alt="Hmmm..." width="300" height="220">
+                <div class="card-body">
+                    <h5 class="card-title">@item.Name</h5>
+                    <p class="card-text">@item.Price.ToString("F2") руб.</p>
+                    <a asp-controller="Cart" asp-action="Add"  asp-route-id="@item.Id" asp-route-returnurl="@returnUrl" 
+                        class="btn btn-outline-primary">Добавить в корзину <i class="fa-solid fa-basket-shopping"></i></a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<nav aria-label="Page navigation">
+    <ul class="pagination">
+        <li class="page-item">
+            <a class="page-link" asp-route-pageno="@prev" asp-route-category="@category" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        @for(int i = 1; i <= Model.TotalPages; i++)
+        {
+            <li class="page-item @(Model.CurrentPage == i ? "active" : "")">
+                <a class="page-link" asp-route-pageno="@i" asp-route-category="@category">@i</a>
+            </li>
+        }
+        <li class="page-item">
+            <a class="page-link" asp-route-pageno="@next" asp-route-category="@category" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>

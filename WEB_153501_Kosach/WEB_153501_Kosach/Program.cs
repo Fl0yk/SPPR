@@ -8,6 +8,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddTransient<IFurnitureCategoryService, MemoryFurnitureCategoryService>();
 builder.Services.AddScoped<IFurnitureService, MemoryFurnitureService>();
 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

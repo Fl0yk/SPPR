@@ -1,4 +1,5 @@
-﻿using WEB_153501_Kosach.Domain.Entities;
+﻿using Microsoft.AspNetCore.Mvc;
+using WEB_153501_Kosach.Domain.Entities;
 using WEB_153501_Kosach.Domain.Models;
 using WEB_153501_Kosach.Services.FurnitureCategoryService;
 
@@ -8,8 +9,12 @@ namespace WEB_153501_Kosach.Services.FurnitureServices
     {
         private readonly List<FurnitureCategory> _categories;
         private List<Furniture> _furnitures;
-        public MemoryFurnitureService(IFurnitureCategoryService categoryService)
+        private readonly IConfiguration _configuration;
+
+        public MemoryFurnitureService([FromServices] IConfiguration config, 
+                                        IFurnitureCategoryService categoryService)
         {
+            _configuration = config;
             _categories = categoryService.GetCategoryListAsync()
                                                 .Result
                                                 .Data;
@@ -95,16 +100,21 @@ namespace WEB_153501_Kosach.Services.FurnitureServices
 
             try
             {
+                List<Furniture> filterData;
                 if(categoryNormalizedName is null)
                 {
-                    response.Data.Items = _furnitures;
+                    filterData = _furnitures;
                 }
                 else
                 {
-                    response.Data.Items = _furnitures.Where(
+                    filterData = _furnitures.Where(
                         f => f.CategoryId?.NormalizedName.Equals(categoryNormalizedName) ?? false)
                         .ToList();
                 }
+
+                response.Data.Items  = SelectPageElements(filterData, pageNo, out int maxPage);
+                response.Data.TotalPages = maxPage;
+                response.Data.CurrentPage = pageNo;
             }
             catch(Exception ex)
             {
@@ -114,6 +124,17 @@ namespace WEB_153501_Kosach.Services.FurnitureServices
 
 
             return Task.FromResult(response);
+        }
+
+        private List<Furniture> SelectPageElements(List<Furniture> filterData, int pageNo, out int maxPage)
+        {
+            int.TryParse(_configuration["ItemsPerPage"], out int pageSize);
+            maxPage = filterData.Count / pageSize + (filterData.Count % pageSize == 0 ? 0 : 1);
+
+            if (pageNo > maxPage)
+                throw new IndexOutOfRangeException("Данной страницы не существует");
+
+            return filterData.Skip(--pageNo * pageSize).Take(pageSize).ToList();
         }
 
         public Task UpdateFurnitureAsync(int id, Furniture furniture, IFormFile? formFile)
