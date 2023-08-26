@@ -10,7 +10,7 @@
 <a class="navbar-brand" href="#">My Web Labs</a>
 <div class="navbar-nav">
     <a class="nav-item nav-link @(controller == "home"?"active":"")" asp-action="Index" asp-controller="Home">Лб 1</a>
-    <a class="nav-item nav-link" asp-action="Index" asp-controller="Product">Каталог</a>
+    <a class="nav-item nav-link @(controller == "furniture"?"active":"")" asp-action="Index" asp-controller="Furniture">Каталог</a>
     <a class="nav-item nav-link" asp-area="Admin" asp-page="/Index">Администрирование</a>
 </div>
 <!-- меню сайта - конец -->
