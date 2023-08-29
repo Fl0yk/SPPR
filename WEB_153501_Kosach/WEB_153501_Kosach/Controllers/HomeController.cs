@@ -17,5 +17,25 @@ namespace WEB_153501_Kosach.Controllers
         {
             return View(selectList);
         }
+
+        [Route("Test")]
+        [Route("Test/{name}/{age:int}")]
+        [Route("Test/{name}")]
+        [Route("Test/age={age:int}")]
+        
+        public string Test(string? name, int age)
+        {
+            string output;
+            if (age > 0 && name is not null)
+                output = name + ", age " + age;
+            else if (age > 0)
+                output = "Age " + age.ToString();
+            else if (name is not null)
+                output = name;
+            else
+                output = "Test";
+
+            return output;
+        }
     }
 }
