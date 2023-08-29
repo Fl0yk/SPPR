@@ -23,7 +23,6 @@ namespace WEB_153501_Kosach.Services.FurnitureServices
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
             };
             _logger = logger;
-
         }
 
 
@@ -45,16 +44,16 @@ namespace WEB_153501_Kosach.Services.FurnitureServices
         public async Task<ResponseData<ListModel<Furniture>>> GetFurnitureListAsync(string? categoryNormalizedName, int pageNo = 1)
         {
             // подготовка URL запроса
-            var urlString  = new StringBuilder($"{_httpClient.BaseAddress.AbsoluteUri}furnitures?");
+            var urlString  = new StringBuilder($"{_httpClient.BaseAddress.AbsoluteUri}furnitures/");
             // добавить категорию в маршрут
             if (categoryNormalizedName != null)
             {
-                urlString.Append($"{categoryNormalizedName}&");
+                urlString.Append($"{categoryNormalizedName}/");
             };
             // добавить номер страницы в маршрут
             if (pageNo > 1)
             {
-                urlString.Append($"pageno={pageNo}&");
+                urlString.Append($"pageno={pageNo}/");
             };
             // добавить размер страницы в строку запроса
             if (!_pageSize.Equals("3"))

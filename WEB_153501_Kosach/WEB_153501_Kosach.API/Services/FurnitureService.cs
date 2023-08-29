@@ -13,18 +13,16 @@ namespace WEB_153501_Kosach.API.Services
         private DbSet<Furniture> _furnitures;
         private readonly AppDbContext _dbContext;
         private static string _url;
-        private static string _webRootPath;
+        private static string _imagesPath;
 
-        public FurnitureService(AppDbContext dbContext)
+        public FurnitureService(AppDbContext dbContext, 
+                                    IConfiguration configuration,
+                                    IWebHostEnvironment environment)
         {
             _dbContext = dbContext;
             _furnitures = dbContext.Furnitures;
-        }
-
-        public static void SetPath(WebApplication app)
-        {
-            _url = app.Configuration["ApiUrl"] ?? "" + "/Images/";
-            _webRootPath = app.Environment.WebRootPath;
+            _url = configuration.GetSection("appUri").Value!;
+            _imagesPath = Path.Combine(environment.WebRootPath, "Images");
         }
 
         public async Task<ResponseData<Furniture>> CreateProductAsync(Furniture product)
@@ -112,7 +110,7 @@ namespace WEB_153501_Kosach.API.Services
         public async Task<ResponseData<string>> SaveImageAsync(int id, IFormFile formFile)
         {
             var elem = await _furnitures.FirstOrDefaultAsync(f => f.Id == id);
-            string path = _webRootPath + "/Images/" + formFile.Name;
+            string path = _imagesPath + "/" + formFile.Name;
             
 
             if (elem is null)

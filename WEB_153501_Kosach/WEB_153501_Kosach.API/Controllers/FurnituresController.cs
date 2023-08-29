@@ -21,7 +21,12 @@ namespace WEB_153501_Kosach.API.Controllers
         // GET: api/Furnitures
         [HttpGet]
         [Route("")]
-        [Route("{pageno=1}/{pagesize=3}/")]
+        [Route("{category}/pageno={pageno:int}/pagesize={pagesize:int}")]
+        [Route("{category}/pageno={pageno:int}")]
+        [Route("{category}/pagesize={pagesize:int}")]
+        [Route("pageno={pageno:int}/pagesize={pagesize:int}")]
+        [Route("pageno={pageno:int}")]
+        [Route("{category}")]
         public async Task<ActionResult<ResponseData<ListModel<Furniture>>>> GetFurnitures(string? category, 
                                                                                 int pageNo = 1, 
                                                                                 int pageSize = 3)
@@ -30,7 +35,7 @@ namespace WEB_153501_Kosach.API.Controllers
         }
 
         // GET: api/Furnitures/5
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<ActionResult<ResponseData<Furniture>>> GetFurniture(int id)
         {
             return Ok(await _furnitureService.GetProductByIdAsync(id));

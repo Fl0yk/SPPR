@@ -10,14 +10,11 @@ namespace WEB_153501_Kosach.Services.FurnitureCategoryService
     {
         private HttpClient _httpClient;
         private ILogger<ApiFurnitureService> _logger;
-        private string _pageSize;
         private JsonSerializerOptions _serializerOptions;
         public ApiCategoryService(HttpClient httpClient,
-                                     IConfiguration configuration,
                                      ILogger<ApiFurnitureService> logger)
         {
             _httpClient = httpClient;
-            _pageSize = configuration.GetSection("ItemsPerPage").Value!;
             _serializerOptions = new JsonSerializerOptions()
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase

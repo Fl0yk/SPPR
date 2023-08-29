@@ -22,8 +22,6 @@ builder.Services.AddScoped<IFurnitureService, FurnitureService>();
 
 var app = builder.Build();
 
-FurnitureService.SetPath(app);
-
 //DbInitializercs.SeedData(app);
 //using var scope = app.Services.CreateScope();
 //var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
