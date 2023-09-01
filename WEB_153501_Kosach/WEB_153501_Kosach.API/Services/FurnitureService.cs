@@ -21,15 +21,23 @@ namespace WEB_153501_Kosach.API.Services
         {
             _dbContext = dbContext;
             _furnitures = dbContext.Furnitures;
-            _url = configuration.GetSection("appUri").Value!;
+            _url = configuration.GetSection("ApiUrl").Value!;
             _imagesPath = Path.Combine(environment.WebRootPath, "Images");
         }
 
         public async Task<ResponseData<Furniture>> CreateProductAsync(Furniture product)
         {
+            if(product.CategoryId is null)
+            {
+                var tmp = _furnitures.AsQueryable().Include(p => p.CategoryId).First();
+                product.CategoryId = tmp.CategoryId;
+            }
             await _furnitures.AddAsync(product);
+            var k = _furnitures.ToList();
+            //Как будто ошибка при сохранении из-за категории
             _dbContext.SaveChanges();
 
+            k = _furnitures.ToList();
             return new ResponseData<Furniture>() { Data = product };
         }
 
@@ -46,7 +54,8 @@ namespace WEB_153501_Kosach.API.Services
 
         public async Task<ResponseData<Furniture>> GetProductByIdAsync(int id)
         {
-            var elem = await _furnitures.FirstOrDefaultAsync(x => x.Id == id);
+            var query = _furnitures.AsQueryable().Include(p => p.CategoryId);
+            var elem = await query.FirstOrDefaultAsync(x => x.Id == id);
             ResponseData<Furniture> response = new ResponseData<Furniture>();
 
             if(elem is not null)
@@ -93,7 +102,7 @@ namespace WEB_153501_Kosach.API.Services
 
             dataList.Items = await query
                                 .Skip((pageNo - 1) * pageSize)
-                                .Take(pageSize)
+                                .Take(pageSize).Include(p => p.CategoryId)
                                .ToListAsync();
 
             dataList.CurrentPage = pageNo;
@@ -109,42 +118,57 @@ namespace WEB_153501_Kosach.API.Services
 
         public async Task<ResponseData<string>> SaveImageAsync(int id, IFormFile formFile)
         {
-            var elem = await _furnitures.FirstOrDefaultAsync(f => f.Id == id);
-            string path = _imagesPath + "/" + formFile.Name;
-            
-
-            if (elem is null)
+            var responseData = new ResponseData<string>();
+            var furniture = await _furnitures.FindAsync(id);
+            if (furniture is null)
             {
-                return new ResponseData<string>
-                {
-                    Success = false,
-                    ErrorMessage = "Элемент не найден"
-                };
+                responseData.Success = false;
+                responseData.ErrorMessage = "No item found";
+                return responseData;
             }
-
-            try
+            //var host = "https://" + _httpContextAccessor.HttpContext.Request.Host;
+            
+            if (formFile != null)
             {
-                using (FileStream fs = new FileStream(path, FileMode.CreateNew))
+                // Удалить предыдущее изображение
+                if (!String.IsNullOrEmpty(furniture.Image))
+                {
+                    var prevImage = Path.GetFileName(furniture.Image);
+
+                    File.Delete(Path.Combine(_imagesPath, prevImage));
+                }
+
+                // Создать имя файла
+                var ext = Path.GetExtension(formFile.FileName);
+                var fName = Path.ChangeExtension(Path.GetRandomFileName(), ext);
+
+                // Сохранить файл
+                using (var fs = new FileStream(Path.Combine(_imagesPath, fName), FileMode.Create))
                 {
                     await formFile.CopyToAsync(fs);
                 }
-
-                var fullPath = _url + formFile.FileName;
-                elem.Image = fullPath;
-                _dbContext.SaveChanges();
-
-                return new ResponseData<string> { Data = fullPath };
+ 
+                 // Указать имя файла в объекте
+                furniture.Image = $"{_url}/Images/{fName}";
+                await _dbContext.SaveChangesAsync();
             }
-            catch (Exception ex)
-            {
-                return new ResponseData<string> { Success = false,
-                                                    ErrorMessage = ex.Message };
-            }
+
+            responseData.Data = furniture.Image;
+            return responseData;
+
         }
 
         public async Task UpdateProductAsync(int id, Furniture product)
         {
-            _furnitures.Entry(product).State = EntityState.Modified;
+            var furniture = await _furnitures.FirstOrDefaultAsync(f => f.Id == id);
+
+            if (furniture is null)
+                return;
+            furniture.Price = product.Price;
+            furniture.Name = product.Name;
+            furniture.Image = product.Image;
+            furniture.CategoryId = product.CategoryId;
+            //_furnitures.Entry(furniture).State = EntityState.Modified;
             await _dbContext.SaveChangesAsync();
         }
     }
