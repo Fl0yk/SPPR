@@ -8,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
 builder.Services.AddScoped<IFurnitureService, ApiFurnitureService>();
 builder.Services.AddScoped<IFurnitureCategoryService, ApiCategoryService>();
 
@@ -34,6 +35,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.MapRazorPages();
 
 app.UseAuthorization();
 

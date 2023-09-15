@@ -1,0 +1,48 @@
+﻿@page
+@model WEB_153501_Kosach.Areas.Admin.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Furniture</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Furniture.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Furniture.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Furniture.Price)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Furniture.Price)
+        </dd>
+        <dt class="col-sm-2">
+            Category
+        </dt>
+        <dd class="col-sm-10">
+            <!--Html.DisplayFor(model => model.Furniture.CategoryId.Name)-->
+            @(Model.Furniture.Category?.Name ?? "Нет категории")
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Furniture.Image)
+        </dt>
+        <dd class="col-sm-10">
+            <img src="@Model.Furniture.Image" alt="Hmmm..." width="300" height="220">
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Furniture?.Id" class="btn btn-primary">
+        <i class="fa-solid fa-pen-to-square"></i>  Edit
+    </a>
+    <a asp-page="./Index" class="btn btn-primary">
+        <i class="fa-solid fa-arrow-left"></i>  Back to List
+    </a>
+</div>

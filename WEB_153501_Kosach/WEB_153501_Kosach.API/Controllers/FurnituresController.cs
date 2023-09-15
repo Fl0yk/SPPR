@@ -62,12 +62,25 @@ namespace WEB_153501_Kosach.API.Controllers
         {
           if (_furnitureService is null)
           {
-              return Problem("Entity set 'FurnitureService'  is null.");
+              return Problem("Service 'FurnitureService'  is null.");
           }
-          await _furnitureService.CreateProductAsync(furniture);
 
-            return CreatedAtAction("GetFurniture", new { id = furniture.Id }, furniture);
+            return Ok(await _furnitureService.CreateProductAsync(furniture));
         }
+
+        // POST: api/Furnitures/5
+        [HttpPost("{id}")]
+        public async Task<ActionResult<ResponseData<string>>> PostImage(int id,
+                                                                            IFormFile formFile)
+        {
+            var response = await _furnitureService.SaveImageAsync(id, formFile);
+            if (response.Success)
+            {
+                return Ok(response);
+            }
+            return NotFound(response);
+        }
+
 
         // DELETE: api/Furnitures/5
         [HttpDelete("{id}")]
