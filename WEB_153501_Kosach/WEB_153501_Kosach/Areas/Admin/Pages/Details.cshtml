@@ -28,7 +28,7 @@
         </dt>
         <dd class="col-sm-10">
             <!--Html.DisplayFor(model => model.Furniture.CategoryId.Name)-->
-            @(Model.Furniture.CategoryId?.Name ?? "Нет категории")
+            @(Model.Furniture.Category?.Name ?? "Нет категории")
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Furniture.Image)

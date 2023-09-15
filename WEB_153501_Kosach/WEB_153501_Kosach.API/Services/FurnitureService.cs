@@ -12,32 +12,36 @@ namespace WEB_153501_Kosach.API.Services
         private readonly int _maxPageSize = 20;
         private DbSet<Furniture> _furnitures;
         private readonly AppDbContext _dbContext;
-        private static string _url;
-        private static string _imagesPath;
+        //private static string _url;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private string _imagesPath;
 
         public FurnitureService(AppDbContext dbContext, 
                                     IConfiguration configuration,
-                                    IWebHostEnvironment environment)
+                                    IWebHostEnvironment environment,
+                                    IHttpContextAccessor httpContextAccessor)
         {
             _dbContext = dbContext;
             _furnitures = dbContext.Furnitures;
-            _url = configuration.GetSection("ApiUrl").Value!;
+            //_url = configuration.GetSection("ApiUrl").Value!;
             _imagesPath = Path.Combine(environment.WebRootPath, "Images");
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<ResponseData<Furniture>> CreateProductAsync(Furniture product)
         {
-            if(product.CategoryId is null)
-            {
-                var tmp = _furnitures.AsQueryable().Include(p => p.CategoryId).First();
-                product.CategoryId = tmp.CategoryId;
-            }
+            //if(product.CategoryId is not null)
+            //{
+            //    //var tmp = _furnitures.AsQueryable().Include(p => p.CategoryId).First();
+            //    //product.CategoryId = tmp.CategoryId;
+            //   // product.CategoryId = _dbContext.FurnitureCategories.First(c => c.Id == product.CategoryId.Id);
+            //}
             await _furnitures.AddAsync(product);
-            var k = _furnitures.ToList();
+            //var k = _furnitures.ToList();
             //Как будто ошибка при сохранении из-за категории
             _dbContext.SaveChanges();
 
-            k = _furnitures.ToList();
+            //k = _furnitures.ToList();
             return new ResponseData<Furniture>() { Data = product };
         }
 
@@ -54,7 +58,7 @@ namespace WEB_153501_Kosach.API.Services
 
         public async Task<ResponseData<Furniture>> GetProductByIdAsync(int id)
         {
-            var query = _furnitures.AsQueryable().Include(p => p.CategoryId);
+            var query = _furnitures.AsQueryable().Include(f => f.Category);
             var elem = await query.FirstOrDefaultAsync(x => x.Id == id);
             ResponseData<Furniture> response = new ResponseData<Furniture>();
 
@@ -75,11 +79,12 @@ namespace WEB_153501_Kosach.API.Services
         {
             if (pageSize > _maxPageSize)
                 pageSize = _maxPageSize;
-            var query = _furnitures.AsQueryable();
+            var query = _furnitures.Include(f => f.Category).AsQueryable();
+            //var k = _furnitures.ToList();
             var dataList = new ListModel<Furniture>();
 
             query = query.Where(d => categoryNormalizedName == null 
-                                || d.CategoryId!.NormalizedName.Equals(categoryNormalizedName));
+                                || d.Category!.NormalizedName.Equals(categoryNormalizedName));
 
             // количество элементов в списке
             var count = query.Count();
@@ -102,7 +107,7 @@ namespace WEB_153501_Kosach.API.Services
 
             dataList.Items = await query
                                 .Skip((pageNo - 1) * pageSize)
-                                .Take(pageSize).Include(p => p.CategoryId)
+                                .Take(pageSize)
                                .ToListAsync();
 
             dataList.CurrentPage = pageNo;
@@ -126,7 +131,7 @@ namespace WEB_153501_Kosach.API.Services
                 responseData.ErrorMessage = "No item found";
                 return responseData;
             }
-            //var host = "https://" + _httpContextAccessor.HttpContext.Request.Host;
+            var host = "https://" + _httpContextAccessor.HttpContext.Request.Host;
             
             if (formFile != null)
             {
@@ -149,7 +154,7 @@ namespace WEB_153501_Kosach.API.Services
                 }
  
                  // Указать имя файла в объекте
-                furniture.Image = $"{_url}/Images/{fName}";
+                furniture.Image = $"{host}/Images/{fName}";
                 await _dbContext.SaveChangesAsync();
             }
 
@@ -166,8 +171,10 @@ namespace WEB_153501_Kosach.API.Services
                 return;
             furniture.Price = product.Price;
             furniture.Name = product.Name;
-            furniture.Image = product.Image;
-            furniture.CategoryId = product.CategoryId;
+            if(!String.IsNullOrEmpty(product.Image))
+                furniture.Image = product.Image;
+            if (product.CategoryId != null)
+                furniture.CategoryId = product.CategoryId;
             //_furnitures.Entry(furniture).State = EntityState.Modified;
             await _dbContext.SaveChangesAsync();
         }

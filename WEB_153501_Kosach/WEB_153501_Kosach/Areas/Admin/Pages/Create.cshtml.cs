@@ -39,9 +39,6 @@ namespace WEB_153501_Kosach.Areas.Admin
         public SelectList Categories { get; set; }
 
         [BindProperty]
-        public int CategoryId { get; set; }
-
-        [BindProperty]
         public Furniture Furniture { get; set; } = default!;
 
         [BindProperty]
@@ -59,12 +56,6 @@ namespace WEB_153501_Kosach.Areas.Admin
                     Categories = new SelectList(requestCategories.Data, "Id", "Name");
                 }
                 return Page();
-            }
-
-
-            if (requestCategories.Success)
-            {
-                //Furniture.CategoryId = requestCategories.Data.FirstOrDefault(c => c.Id == CategoryId);
             }
 
             await _furnitureService.CreateFurnitureAsync(Furniture, Image);

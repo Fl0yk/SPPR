@@ -1,9 +1,13 @@
 ﻿@{
     Layout = null;
     var controller = ViewContext.RouteData.Values["controller"]?
-        .ToString()?
-        .ToLower()
-        ?? String.Empty;
+                                .ToString()?
+                                .ToLower()
+                                ?? String.Empty;
+    var area = ViewContext.RouteData.Values["area"]?
+                                .ToString()?
+                                .ToLower()
+                                ?? String.Empty;
 }
 
 <!-- меню сайта -->
@@ -11,6 +15,6 @@
 <div class="navbar-nav">
     <a class="nav-item nav-link @(controller == "home"?"active":"")" asp-action="Index" asp-controller="Home">Лб 1</a>
     <a class="nav-item nav-link @(controller == "furniture"?"active":"")" asp-action="Index" asp-controller="Furniture">Каталог</a>
-    <a class="nav-item nav-link" asp-area="Admin" asp-page="/Index">Администрирование</a>
+    <a class="nav-item nav-link @(area == "admin"?"active":"")" asp-area="Admin" asp-page="/Index">Администрирование</a>
 </div>
 <!-- меню сайта - конец -->
