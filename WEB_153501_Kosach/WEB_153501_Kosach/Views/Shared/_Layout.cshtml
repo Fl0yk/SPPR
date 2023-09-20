@@ -13,11 +13,18 @@
     <header>
         <div class="container">
             <!-- Панель навигации -->
-            <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-                <partial name="_MenuPartial" />
-                <partial name="_UserInfoPartial" />
-            </nav> <!-- Панель навигации - конец -->
-        </div><!-- container - конец -->
+            <div class="row">
+                <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+                    <div class="col-8">
+                        <partial name="_MenuPartial" />
+                    </div>
+                    <div class="col-4">
+                        <partial name="_UserInfoPartial" />
+                    </div>
+                </nav> <!-- Панель навигации - конец -->
+            </div>
+        </div>
+        <!-- container - конец -->
     </header>
     <div class="container">
         @RenderBody()

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Security.Claims;
 using WEB_153501_Kosach.Models;
 
 namespace WEB_153501_Kosach.Controllers
@@ -15,6 +16,11 @@ namespace WEB_153501_Kosach.Controllers
 
         public IActionResult Index()
         {
+            var role = Request.HttpContext.User.FindFirst(ClaimsIdentity.DefaultRoleClaimType);
+            foreach(var cl in Request.HttpContext.User.Claims)
+            {
+                var c = cl.Value;
+            }
             return View(selectList);
         }
 

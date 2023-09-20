@@ -30,18 +30,10 @@ namespace WEB_153501_Kosach.API.Services
 
         public async Task<ResponseData<Furniture>> CreateProductAsync(Furniture product)
         {
-            //if(product.CategoryId is not null)
-            //{
-            //    //var tmp = _furnitures.AsQueryable().Include(p => p.CategoryId).First();
-            //    //product.CategoryId = tmp.CategoryId;
-            //   // product.CategoryId = _dbContext.FurnitureCategories.First(c => c.Id == product.CategoryId.Id);
-            //}
             await _furnitures.AddAsync(product);
-            //var k = _furnitures.ToList();
-            //Как будто ошибка при сохранении из-за категории
+
             _dbContext.SaveChanges();
 
-            //k = _furnitures.ToList();
             return new ResponseData<Furniture>() { Data = product };
         }
 
@@ -165,7 +157,9 @@ namespace WEB_153501_Kosach.API.Services
 
         public async Task UpdateProductAsync(int id, Furniture product)
         {
-            var furniture = await _furnitures.FirstOrDefaultAsync(f => f.Id == id);
+            var furniture = await _furnitures
+                                    .Include(f => f.Category)
+                                    .FirstOrDefaultAsync(f => f.Id == id);
 
             if (furniture is null)
                 return;
@@ -173,7 +167,7 @@ namespace WEB_153501_Kosach.API.Services
             furniture.Name = product.Name;
             if(!String.IsNullOrEmpty(product.Image))
                 furniture.Image = product.Image;
-            if (product.CategoryId != null)
+            if (product.Category is not null)
                 furniture.CategoryId = product.CategoryId;
             //_furnitures.Entry(furniture).State = EntityState.Modified;
             await _dbContext.SaveChangesAsync();

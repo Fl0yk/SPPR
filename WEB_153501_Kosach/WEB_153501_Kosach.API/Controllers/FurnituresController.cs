@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using WEB_153501_Kosach.API.Data;
 using WEB_153501_Kosach.API.Services;
 using WEB_153501_Kosach.Domain.Entities;
@@ -43,9 +45,12 @@ namespace WEB_153501_Kosach.API.Controllers
 
         // PUT: api/Furnitures/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        
         [HttpPut("{id}")]
+        [Authorize]//(Roles = "admin, user")]
         public async Task<ActionResult<ResponseData<Furniture>>> PutFurniture(int id, Furniture furniture)
         {
+            var k = "";
             if (id != furniture.Id)
             {
                 return BadRequest();
@@ -58,6 +63,7 @@ namespace WEB_153501_Kosach.API.Controllers
         // POST: api/Furnitures
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<ResponseData<Furniture>>> PostFurniture(Furniture furniture)
         {
           if (_furnitureService is null)
@@ -70,6 +76,7 @@ namespace WEB_153501_Kosach.API.Controllers
 
         // POST: api/Furnitures/5
         [HttpPost("{id}")]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<ResponseData<string>>> PostImage(int id,
                                                                             IFormFile formFile)
         {
@@ -84,6 +91,7 @@ namespace WEB_153501_Kosach.API.Controllers
 
         // DELETE: api/Furnitures/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<ResponseData<Furniture>>> DeleteFurniture(int id)
         {
             try

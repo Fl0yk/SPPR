@@ -1,38 +1,52 @@
 ﻿@{
-    Layout = null;
+    string? userEmail = User.Claims.FirstOrDefault(c =>
+                c.Type.Equals("Name", StringComparison.OrdinalIgnoreCase))
+                ?.Value;
+    //var us = User.FindFirst(ClaimsIdentity.DefaultRoleClaimType);
 }
 
 <!-- Информация пользователя -->
-<a class="navbar-text ms-auto" asp-action="Index" asp-controller="Cart">
-    @await Component.InvokeAsync(nameof(Cart), new {nameOfData = "balance"}) руб <i class="fa-solid fa-cart-shopping"></i> 
-    (@await Component.InvokeAsync(nameof(Cart), new {nameOfData = "count"}))
-</a>
-<div class="dropdown ms-4 nav-color">
-    <button class="btn btn-secondary dropdown-toggle"
-            type="button" id="dropdownMenuButton"
-            data-bs-toggle="dropdown"
-            aria-expanded="false">
-        User@gmail.com
-        <img src="images/user-regular.svg" width="30"
-             alt="User" class="rounded nav-color" />
-    </button>
-    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <li>
-            <span class="dropdown-item-text">
-                <img src="images/circle-user-regular.svg"
-                     width="50" alt="User" class="rounded" />
-                user@gmail.com
-            </span>
-        </li>
-        <li><hr class="dropdown-divider"></li>
-        <li>
-            <form id="logoutForm" class="form-inline">
-                <button id="logout" type="submit" class="nav-link btn btn-link text-dark"
-                        asp-action="LogOut" asp-controller="Identity">
-                    Logout
-                </button>
-            </form>
-        </li>
-    </ul>
-</div>
+@if (User.Identity.IsAuthenticated)
+{
+    <div class="dropdown ms-4 nav-color">
+        @await Component.InvokeAsync("Cart")
+        <button class="btn btn-secondary dropdown-toggle"
+        type="button" id="dropdownMenuButton"
+        data-bs-toggle="dropdown"
+        aria-expanded="false">
+            @userEmail
+            <img src="https://localhost:7003/avatar" width="30"
+            alt="User" class="rounded nav-color" />
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <li>
+                <span class="dropdown-item-text">
+                    <img src="https://localhost:7003/avatar"
+                            width="50" alt="User" class="rounded" />
+                    @userEmail
+                </span>
+            </li>
+            <li><hr class="dropdown-divider"></li>
+            <li>
+                <form id="logoutForm" class="form-inline">
+                    <button id="logout" type="submit" class="nav-link btn btn-link text-dark"
+                            asp-controller="Identity" asp-action="Logout">
+                        Logout
+                    </button>
+                </form>
+            </li>
+        </ul>
+    </div>
+}
+else
+{
+    <div class="col-md-4 offset-md-4 float-md-end">
+        <form id="loginForm" class="form-inline">
+            <button id="login" type="submit" class="nav-link btn btn-link text-white"
+                    asp-action="Login" asp-controller="Identity">
+                Login
+            </button>
+        </form>
+    </div>
+}
 <!-- Информация пользователя - конец -->

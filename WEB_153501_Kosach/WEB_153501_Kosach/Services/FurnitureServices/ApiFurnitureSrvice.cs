@@ -1,6 +1,8 @@
 ﻿using Azure.Core;
+using Microsoft.AspNetCore.Authentication;
 using System.Data.SqlTypes;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using WEB_153501_Kosach.Domain.Entities;
@@ -14,9 +16,11 @@ namespace WEB_153501_Kosach.Services.FurnitureServices
         private ILogger<ApiFurnitureService> _logger;
         private string _pageSize;
         private JsonSerializerOptions _serializerOptions;
+        private HttpContext _httpContext;
         public ApiFurnitureService(HttpClient httpClient,
                                      IConfiguration configuration,
-                                     ILogger<ApiFurnitureService> logger)
+                                     ILogger<ApiFurnitureService> logger,
+                                     IHttpContextAccessor httpContextAccessor)
         {
             _httpClient = httpClient;
             _pageSize = configuration.GetSection("ItemsPerPage").Value;
@@ -26,11 +30,17 @@ namespace WEB_153501_Kosach.Services.FurnitureServices
                 IncludeFields = true
             };
             _logger = logger;
+            _httpContext = httpContextAccessor.HttpContext 
+                                ?? throw new ArgumentNullException(nameof(_httpContext), "HttpContext is null");
         }
 
 
         public async Task<ResponseData<Furniture>> CreateFurnitureAsync(Furniture furniture, IFormFile? formFile)
         {
+            var token = await _httpContext.GetTokenAsync("access_token");
+            _httpClient.DefaultRequestHeaders.Authorization
+                            = new AuthenticationHeaderValue("bearer", token);
+
             var response = await _httpClient.PostAsJsonAsync(new Uri($"{_httpClient.BaseAddress.AbsoluteUri}furnitures"),
                                                                                                         furniture,
                                                                                                         _serializerOptions);
@@ -71,6 +81,10 @@ namespace WEB_153501_Kosach.Services.FurnitureServices
 
         public async Task DeleteFurnitureAsync(int id)
         {
+            var token = await _httpContext.GetTokenAsync("access_token");
+            _httpClient.DefaultRequestHeaders.Authorization
+                            = new AuthenticationHeaderValue("bearer", token);
+
             var response = await _httpClient.DeleteAsync(new Uri($"{_httpClient.BaseAddress.AbsoluteUri}furnitures/{id}"));
 
             if (!response.IsSuccessStatusCode)
@@ -81,6 +95,10 @@ namespace WEB_153501_Kosach.Services.FurnitureServices
 
         public async Task<ResponseData<Furniture>> GetFurnitureByIdAsync(int id)
         {
+            var token = await _httpContext.GetTokenAsync("access_token");
+            _httpClient.DefaultRequestHeaders.Authorization 
+                            = new AuthenticationHeaderValue("bearer",token);
+
             var response = await _httpClient.GetAsync(new Uri($"{_httpClient.BaseAddress.AbsoluteUri}furnitures/{id}"));
             if (response.IsSuccessStatusCode)
             {
@@ -129,6 +147,9 @@ namespace WEB_153501_Kosach.Services.FurnitureServices
                 urlString.Append(QueryString.Create("pageSize", _pageSize));
             }
 
+            var token = await _httpContext.GetTokenAsync("access_token");
+            _httpClient.DefaultRequestHeaders.Authorization
+                            = new AuthenticationHeaderValue("bearer", token);
             // отправить запрос к API
             var response = await _httpClient.GetAsync(new Uri(urlString.ToString()));
 
@@ -161,6 +182,10 @@ namespace WEB_153501_Kosach.Services.FurnitureServices
 
         public async Task UpdateFurnitureAsync(int id, Furniture furniture, IFormFile? formFile)
         {
+            var token = await _httpContext.GetTokenAsync("access_token");
+            _httpClient.DefaultRequestHeaders.Authorization
+                            = new AuthenticationHeaderValue("bearer", token);
+
             var response = await _httpClient.PutAsJsonAsync(new Uri($"{_httpClient.BaseAddress.AbsoluteUri}furnitures/{id}"),
                                                                                                     furniture,
                                                                                                     _serializerOptions);
@@ -177,6 +202,10 @@ namespace WEB_153501_Kosach.Services.FurnitureServices
 
         private async Task SaveImageAsync(int id, IFormFile image)
         {
+            var token = await _httpContext.GetTokenAsync("access_token");
+            _httpClient.DefaultRequestHeaders.Authorization
+                            = new AuthenticationHeaderValue("bearer", token);
+
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Post,

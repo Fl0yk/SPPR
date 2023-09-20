@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WEB_153501_Kosach", "WEB_15
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WEB_153501_Kosach.Domain", "WEB_153501_Kosach.Domain\WEB_153501_Kosach.Domain.csproj", "{C54DB375-EF3E-4A0F-BC7B-66ED4BE5933B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WEB_153501_Kosach.API", "WEB_153501_Kosach.API\WEB_153501_Kosach.API.csproj", "{3EACECD5-2650-48EB-832A-DDE2EFAF9A6C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WEB_153501_Kosach.API", "WEB_153501_Kosach.API\WEB_153501_Kosach.API.csproj", "{3EACECD5-2650-48EB-832A-DDE2EFAF9A6C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WEB_153501_Kosach.IdentityServer", "WEB_153501_Kosach.IdentityServer\WEB_153501_Kosach.IdentityServer.csproj", "{3E3A37ED-D9A5-4D91-9C7D-21A6C803C35F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{3EACECD5-2650-48EB-832A-DDE2EFAF9A6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3EACECD5-2650-48EB-832A-DDE2EFAF9A6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3EACECD5-2650-48EB-832A-DDE2EFAF9A6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E3A37ED-D9A5-4D91-9C7D-21A6C803C35F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E3A37ED-D9A5-4D91-9C7D-21A6C803C35F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E3A37ED-D9A5-4D91-9C7D-21A6C803C35F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E3A37ED-D9A5-4D91-9C7D-21A6C803C35F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
