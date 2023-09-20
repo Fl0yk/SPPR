@@ -47,7 +47,7 @@ namespace WEB_153501_Kosach.API.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         
         [HttpPut("{id}")]
-        [Authorize]//(Roles = "admin, user")]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<ResponseData<Furniture>>> PutFurniture(int id, Furniture furniture)
         {
             var k = "";

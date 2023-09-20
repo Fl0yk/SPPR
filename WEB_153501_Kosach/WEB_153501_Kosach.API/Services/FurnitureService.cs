@@ -43,6 +43,13 @@ namespace WEB_153501_Kosach.API.Services
 
             if (elem is not null)
             {
+                string fullPath = Path.Combine(_imagesPath, elem.Image ?? "");
+
+                if(File.Exists(fullPath))
+                {
+                    File.Delete(fullPath);
+                }
+
                 _furnitures.Remove(elem);
                 _dbContext.SaveChanges();
             }

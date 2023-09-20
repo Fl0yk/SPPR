@@ -1,9 +1,12 @@
 using Duende.IdentityServer;
+using Duende.IdentityServer.AspNetIdentity;
+using Duende.IdentityServer.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using WEB_153501_Kosach.IdentityServer.Data;
 using WEB_153501_Kosach.IdentityServer.Models;
+using WEB_153501_Kosach.IdentityServer.Services;
 
 namespace WEB_153501_Kosach.IdentityServer
 {
@@ -13,6 +16,8 @@ namespace WEB_153501_Kosach.IdentityServer
         {
             builder.Services.AddRazorPages();
             builder.Services.AddControllers();
+
+            builder.Services.AddTransient<IProfileService, ProfileService>();
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));

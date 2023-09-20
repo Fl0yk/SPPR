@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
+using System.IdentityModel.Tokens.Jwt;
 using WEB_153501_Kosach;
 using WEB_153501_Kosach.Domain.Entities;
 using WEB_153501_Kosach.Services.FurnitureCategoryService;
@@ -27,6 +29,7 @@ builder.Services.AddHttpClient<IFurnitureCategoryService, ApiCategoryService>(op
 //Внедрение сервисов аунтентификации
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddAuthorization();
+JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 builder.Services.AddAuthentication(opt =>
                         {
                             opt.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -46,6 +49,10 @@ builder.Services.AddAuthentication(opt =>
                             options.ResponseType = "code";
                             options.ResponseMode = "query";
                             options.SaveTokens = true;
+
+                            options.Scope.Add("roles");
+                            options.ClaimActions.MapJsonKey("role", "role", "role");
+                            options.TokenValidationParameters.RoleClaimType = "role";
                         }).AddJwtBearer(opt =>
                         {
                             opt.Authority = 

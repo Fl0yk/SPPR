@@ -9,6 +9,7 @@ namespace WEB_153501_Kosach.IdentityServer
             {
             new IdentityResources.OpenId(),
             new IdentityResources.Profile(),
+            new IdentityResource("roles", new[] { "role" }),
             };
 
         public static IEnumerable<ApiScope> ApiScopes =>
@@ -46,7 +47,7 @@ namespace WEB_153501_Kosach.IdentityServer
                 PostLogoutRedirectUris = { "https://localhost:7001/signout-callback-oidc" },
 
                 //AllowOfflineAccess = true,
-                AllowedScopes = { "openid", "profile", "api.read", "api.write" }
+                AllowedScopes = { "openid", "profile", "api.read", "api.write", "roles" }
             },
             };
     }
