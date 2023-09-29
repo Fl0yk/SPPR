@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using WEB_153501_Kosach;
 using WEB_153501_Kosach.Domain.Entities;
 using WEB_153501_Kosach.Services.FurnitureCategoryService;
@@ -43,7 +44,37 @@ builder.Services.AddAuthentication(opt =>
                             opt.TokenValidationParameters.ValidateAudience = false;
                             opt.TokenValidationParameters.ValidTypes =
                                                             new[] { "at+jwt" };
-                        }).AddOpenIdConnect("oidc", options =>
+                            opt.TokenValidationParameters.RoleClaimType = "role";
+
+                            opt.Events = new JwtBearerEvents {
+                                OnTokenValidated = async context =>
+                                {
+                                    //var scopeClaims = context?.Principal?.Claims.Where(c => c.Type == "role") ?? null;
+
+                                    //foreach (var scopeClaim in scopeClaims)
+                                    //{
+                                    //    context.Principal.Identities.First().AddClaim(new Claim(ClaimTypes.Role, scopeClaim.Value));
+                                    //}
+
+                                    //return Task.CompletedTask;
+                                    //var claims = new ClaimsIdentity(context.HttpContext.User.Claims.Where(c => c.Type == "role").ToArray());
+                                    //await Console.Out.WriteLineAsync();
+                                    //context.Principal.AddIdentity(claims);
+                                    await Console.Out.WriteLineAsync("Start validate");
+                                    var claim = new Claim("Aaaaaa", "aaaa");
+                                    if(context.Principal is null)
+                                    {
+                                        throw new ArgumentException();
+                                    }
+                                    context.Principal.AddIdentity(new ClaimsIdentity(new Claim[] { claim }));
+                                    foreach( var a in context.Principal.Claims)
+                                    {
+                                        await Console.Out.WriteLineAsync(a.Type + ":  " + a.Value);
+                                    }
+                                }
+                            };
+                        })
+                        .AddOpenIdConnect("oidc", options =>
                         {
                             options.Authority =
                                     builder.Configuration["InteractiveServiceSettings:AuthorityUrl"];
@@ -51,6 +82,7 @@ builder.Services.AddAuthentication(opt =>
                                     builder.Configuration["InteractiveServiceSettings:ClientId"];
                             options.ClientSecret =
                                     builder.Configuration["InteractiveServiceSettings:ClientSecret"];
+
                             // Получить Claims пользователя
                             options.GetClaimsFromUserInfoEndpoint = true;
                             options.ResponseType = "code";

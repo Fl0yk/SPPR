@@ -11,7 +11,8 @@ namespace WEB_153501_Kosach.Controllers
     {
         private readonly IFurnitureService _furnitureService;
         private readonly IFurnitureCategoryService _furnitureCategoryService;
-        public FurnitureController(IFurnitureService furnitureService, IFurnitureCategoryService categoryService) 
+        public FurnitureController(IFurnitureService furnitureService, 
+                                    IFurnitureCategoryService categoryService) 
         {
             _furnitureService = furnitureService;
             _furnitureCategoryService = categoryService;
