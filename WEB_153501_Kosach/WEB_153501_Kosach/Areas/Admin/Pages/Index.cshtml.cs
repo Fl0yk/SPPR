@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using WEB_153501_Kosach.API.Data;
 using WEB_153501_Kosach.Domain.Entities;
 using WEB_153501_Kosach.Domain.Models;
@@ -33,7 +35,7 @@ namespace WEB_153501_Kosach.Areas.Admin
         public string? Category { get; set; }
         public string CurCategory { get; set; }
 
-        public async Task OnGetAsync(int? pageno, string? category)
+        public async Task<IActionResult> OnGetAsync(int? pageno, string? category)
         {
             var requestFurnitures = await _furnitureService.GetFurnitureListAsync(category, pageno ?? 1);
             ResponseData<List<FurnitureCategory>> requestCategories = await _categoryService.GetCategoryListAsync();
@@ -50,6 +52,11 @@ namespace WEB_153501_Kosach.Areas.Admin
                 CurCategory = Categories
                             .FirstOrDefault(c => c.NormalizedName == Category)?
                             .Name ?? "Все";
+                return Page();
+            }
+            else
+            {
+                return NotFound();
             }
         }
     }

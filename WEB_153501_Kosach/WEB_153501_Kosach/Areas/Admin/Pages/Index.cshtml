@@ -12,7 +12,13 @@
 }
 
 <h1>Панель администратора</h1>
+@if (User.Identity.IsAuthenticated) {
+    <p>Every logged in user will see this including the paragraph above</p>
+}
 
+@if(User.IsInRole("admin")) {
+    <p>Only a user thats admin will see this + the paragraphs above</p>
+}
 <p>
     <a asp-page="Create" class="btn btn-primary">
         <i class="fa-regular fa-square-plus"></i>  Create New
