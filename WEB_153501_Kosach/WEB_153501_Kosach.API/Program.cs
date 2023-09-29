@@ -1,5 +1,8 @@
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using System.IdentityModel.Tokens.Jwt;
 using WEB_153501_Kosach.API.Data;
 using WEB_153501_Kosach.API.Services;
 using WEB_153501_Kosach.Domain.Entities;
@@ -13,7 +16,8 @@ builder.Services.AddDbContext<AppDbContext>(
                                     options => options.UseSqlite(connectingString));
 
 //Регистрация сервисов аунтификации
-//builder.Services.AddAuthorization();
+builder.Services.AddAuthorization();
+JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 builder.Services
             .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(opt =>
@@ -22,9 +26,9 @@ builder.Services
                                 .Configuration
                                 .GetSection("isUri").Value;
                 opt.TokenValidationParameters.ValidateAudience = false;
-                opt.TokenValidationParameters.ValidTypes =
-                                                new[] { "at+jwt" };
+                opt.TokenValidationParameters.ValidTypes = new[] { "at+jwt" };
             });
+
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddControllers();

@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using WEB_153501_Kosach.Models;
 
@@ -9,6 +11,7 @@ namespace WEB_153501_Kosach.Controllers
     {
         private SelectList selectList = new SelectList(new List<ListDemo>()
         {
+
             new ListDemo(){Id = 1, Name = "Element 1"},
             new ListDemo(){Id = 2, Name = "Element 2"},
             new ListDemo(){Id = 3, Name = "Element 3"}
@@ -16,11 +19,6 @@ namespace WEB_153501_Kosach.Controllers
 
         public IActionResult Index()
         {
-            var role = Request.HttpContext.User.FindFirst(ClaimsIdentity.DefaultRoleClaimType);
-            foreach(var cl in Request.HttpContext.User.Claims)
-            {
-                var c = cl.Value;
-            }
             return View(selectList);
         }
 

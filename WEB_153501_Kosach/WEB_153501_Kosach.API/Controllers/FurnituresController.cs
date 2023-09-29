@@ -38,6 +38,7 @@ namespace WEB_153501_Kosach.API.Controllers
 
         // GET: api/Furnitures/5
         [HttpGet("{id:int}")]
+        [Authorize]//(Roles = "admin")]
         public async Task<ActionResult<ResponseData<Furniture>>> GetFurniture(int id)
         {
             return Ok(await _furnitureService.GetProductByIdAsync(id));
@@ -47,10 +48,9 @@ namespace WEB_153501_Kosach.API.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         
         [HttpPut("{id}")]
-        [Authorize(Roles = "admin")]
+        [Authorize]//(Roles = "admin")]
         public async Task<ActionResult<ResponseData<Furniture>>> PutFurniture(int id, Furniture furniture)
         {
-            var k = "";
             if (id != furniture.Id)
             {
                 return BadRequest();
@@ -63,7 +63,7 @@ namespace WEB_153501_Kosach.API.Controllers
         // POST: api/Furnitures
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        [Authorize(Roles = "admin")]
+        [Authorize]//(Roles = "admin")]
         public async Task<ActionResult<ResponseData<Furniture>>> PostFurniture(Furniture furniture)
         {
           if (_furnitureService is null)
@@ -76,7 +76,7 @@ namespace WEB_153501_Kosach.API.Controllers
 
         // POST: api/Furnitures/5
         [HttpPost("{id}")]
-        [Authorize(Roles = "admin")]
+        [Authorize]//(Roles = "admin")]
         public async Task<ActionResult<ResponseData<string>>> PostImage(int id,
                                                                             IFormFile formFile)
         {
@@ -91,7 +91,7 @@ namespace WEB_153501_Kosach.API.Controllers
 
         // DELETE: api/Furnitures/5
         [HttpDelete("{id}")]
-        [Authorize(Roles = "admin")]
+        [Authorize]//(Roles = "admin")]
         public async Task<ActionResult<ResponseData<Furniture>>> DeleteFurniture(int id)
         {
             try

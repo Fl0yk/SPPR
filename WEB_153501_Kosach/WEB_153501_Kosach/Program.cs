@@ -36,7 +36,14 @@ builder.Services.AddAuthentication(opt =>
                             opt.DefaultChallengeScheme = "oidc";
                         })
                         .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
-                        .AddOpenIdConnect("oidc", options =>
+                        .AddJwtBearer(opt =>
+                        {
+                            opt.Authority = 
+                                    builder.Configuration["InteractiveServiceSettings:AuthorityUrl"];
+                            opt.TokenValidationParameters.ValidateAudience = false;
+                            opt.TokenValidationParameters.ValidTypes =
+                                                            new[] { "at+jwt" };
+                        }).AddOpenIdConnect("oidc", options =>
                         {
                             options.Authority =
                                     builder.Configuration["InteractiveServiceSettings:AuthorityUrl"];
@@ -53,13 +60,6 @@ builder.Services.AddAuthentication(opt =>
                             options.Scope.Add("roles");
                             options.ClaimActions.MapJsonKey("role", "role", "role");
                             options.TokenValidationParameters.RoleClaimType = "role";
-                        }).AddJwtBearer(opt =>
-                        {
-                            opt.Authority = 
-                                    builder.Configuration["InteractiveServiceSettings:AuthorityUrl"];
-                            opt.TokenValidationParameters.ValidateAudience = false;
-                            opt.TokenValidationParameters.ValidTypes =
-                                                            new[] { "at+jwt" };
                         });
 
 

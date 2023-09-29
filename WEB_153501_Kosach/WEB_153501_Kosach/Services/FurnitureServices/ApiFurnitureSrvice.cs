@@ -1,8 +1,13 @@
 ﻿using Azure.Core;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
+using Microsoft.IdentityModel.Tokens;
+using NuGet.Common;
 using System.Data.SqlTypes;
+using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
 using WEB_153501_Kosach.Domain.Entities;
@@ -12,11 +17,11 @@ namespace WEB_153501_Kosach.Services.FurnitureServices
 {
     public class ApiFurnitureService : IFurnitureService
     {
-        private HttpClient _httpClient;
-        private ILogger<ApiFurnitureService> _logger;
-        private string _pageSize;
-        private JsonSerializerOptions _serializerOptions;
-        private HttpContext _httpContext;
+        private readonly HttpClient _httpClient;
+        private readonly ILogger<ApiFurnitureService> _logger;
+        private readonly string _pageSize;
+        private readonly JsonSerializerOptions _serializerOptions;
+        private readonly HttpContext _httpContext;
         public ApiFurnitureService(HttpClient httpClient,
                                      IConfiguration configuration,
                                      ILogger<ApiFurnitureService> logger,
@@ -34,13 +39,11 @@ namespace WEB_153501_Kosach.Services.FurnitureServices
                                 ?? throw new ArgumentNullException(nameof(_httpContext), "HttpContext is null");
         }
 
-
         public async Task<ResponseData<Furniture>> CreateFurnitureAsync(Furniture furniture, IFormFile? formFile)
         {
             var token = await _httpContext.GetTokenAsync("access_token");
             _httpClient.DefaultRequestHeaders.Authorization
                             = new AuthenticationHeaderValue("bearer", token);
-
             var response = await _httpClient.PostAsJsonAsync(new Uri($"{_httpClient.BaseAddress.AbsoluteUri}furnitures"),
                                                                                                         furniture,
                                                                                                         _serializerOptions);
