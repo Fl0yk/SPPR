@@ -81,8 +81,8 @@ namespace WEB_153501_Kosach.TagHelpers
             string? path = string.Empty;
             if (Admin)
             {
-
-                path = _linkGenerator.GetPathByPage(_contextAccessor.HttpContext);
+                path = _linkGenerator.GetPathByPage(_contextAccessor.HttpContext,
+                                                       values: new { pageno = pageno, category = Category });
             }
             else
             {

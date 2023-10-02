@@ -31,6 +31,7 @@ namespace WEB_153501_Kosach.Areas.Admin
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
+
             if (id == null || _furnitureService == null)
             {
                 return NotFound();

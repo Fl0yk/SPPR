@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.OAuth.Claims;
 using Microsoft.Extensions.Options;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -45,34 +46,6 @@ builder.Services.AddAuthentication(opt =>
                             opt.TokenValidationParameters.ValidTypes =
                                                             new[] { "at+jwt" };
                             opt.TokenValidationParameters.RoleClaimType = "role";
-
-                            opt.Events = new JwtBearerEvents {
-                                OnTokenValidated = async context =>
-                                {
-                                    //var scopeClaims = context?.Principal?.Claims.Where(c => c.Type == "role") ?? null;
-
-                                    //foreach (var scopeClaim in scopeClaims)
-                                    //{
-                                    //    context.Principal.Identities.First().AddClaim(new Claim(ClaimTypes.Role, scopeClaim.Value));
-                                    //}
-
-                                    //return Task.CompletedTask;
-                                    //var claims = new ClaimsIdentity(context.HttpContext.User.Claims.Where(c => c.Type == "role").ToArray());
-                                    //await Console.Out.WriteLineAsync();
-                                    //context.Principal.AddIdentity(claims);
-                                    await Console.Out.WriteLineAsync("Start validate");
-                                    var claim = new Claim("Aaaaaa", "aaaa");
-                                    if(context.Principal is null)
-                                    {
-                                        throw new ArgumentException();
-                                    }
-                                    context.Principal.AddIdentity(new ClaimsIdentity(new Claim[] { claim }));
-                                    foreach( var a in context.Principal.Claims)
-                                    {
-                                        await Console.Out.WriteLineAsync(a.Type + ":  " + a.Value);
-                                    }
-                                }
-                            };
                         })
                         .AddOpenIdConnect("oidc", options =>
                         {
@@ -89,8 +62,13 @@ builder.Services.AddAuthentication(opt =>
                             options.ResponseMode = "query";
                             options.SaveTokens = true;
 
-                            options.Scope.Add("roles");
+                            
+
+                            options.Scope.Add("role");
                             options.ClaimActions.MapJsonKey("role", "role", "role");
+                            options.Scope.Add("api_role");
+                            options.ClaimActions.MapJsonKey("api_role", "role", "role");
+                            //options.ClaimActions.Add(new JsonKeyClaimAction("api_role", null, "role"));
                             options.TokenValidationParameters.RoleClaimType = "role";
                         });
 

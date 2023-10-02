@@ -27,6 +27,7 @@ builder.Services
                                 .GetSection("isUri").Value;
                 opt.TokenValidationParameters.ValidateAudience = false;
                 opt.TokenValidationParameters.ValidTypes = new[] { "at+jwt" };
+                opt.TokenValidationParameters.RoleClaimType = "role";
             });
 
 

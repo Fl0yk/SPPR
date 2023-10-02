@@ -98,7 +98,8 @@ namespace WEB_153501_Kosach.Services.FurnitureServices
 
         public async Task<ResponseData<Furniture>> GetFurnitureByIdAsync(int id)
         {
-            var claims = new ClaimsIdentity(_httpContext.User.Claims.ToArray());
+            //var claims = new ClaimsIdentity(_httpContext.User.Claims.ToArray());
+            //var us = _httpContext.User;
             var token = await _httpContext.GetTokenAsync("access_token");
             _httpClient.DefaultRequestHeaders.Authorization 
                             = new AuthenticationHeaderValue("bearer", token);
@@ -151,6 +152,7 @@ namespace WEB_153501_Kosach.Services.FurnitureServices
                 urlString.Append(QueryString.Create("pageSize", _pageSize));
             }
 
+            var us = _httpContext.User;
             var token = await _httpContext.GetTokenAsync("access_token");
             _httpClient.DefaultRequestHeaders.Authorization
                             = new AuthenticationHeaderValue("bearer", token);

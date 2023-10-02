@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WEB_153501_Kosach.Domain", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WEB_153501_Kosach.API", "WEB_153501_Kosach.API\WEB_153501_Kosach.API.csproj", "{3EACECD5-2650-48EB-832A-DDE2EFAF9A6C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WEB_153501_Kosach.IdentityServer", "WEB_153501_Kosach.IdentityServer\WEB_153501_Kosach.IdentityServer.csproj", "{3E3A37ED-D9A5-4D91-9C7D-21A6C803C35F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WEB_153501_Kosach.IdentityServer", "WEB_153501_Kosach.IdentityServer\WEB_153501_Kosach.IdentityServer.csproj", "{3E3A37ED-D9A5-4D91-9C7D-21A6C803C35F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,6 +1,7 @@
 ﻿using Duende.IdentityServer.Models;
 using Duende.IdentityServer.Services;
 using IdentityModel;
+using System.Security.Claims;
 
 namespace WEB_153501_Kosach.IdentityServer.Services
 {

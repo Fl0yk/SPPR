@@ -52,7 +52,7 @@
     </ul>
 </div><!-- выбор категории -->
 
-<div class="row row-cols-1 row-cols-md-3 g-4">
+@* <div class="row row-cols-1 row-cols-md-3 g-4">
     @foreach(var item in Model.Items)
     {
         <div class="col">
@@ -67,9 +67,15 @@
             </div>
         </div>
     }
-</div>
+</div> *@
 
-<nav aria-label="Page navigation">
+<partial name="_FurnituriesPartial" />
+
+<Pager current-page="@Model.CurrentPage"
+       total-pages="@Model.TotalPages"
+       category="@category">
+</Pager>
+@* <nav aria-label="Page navigation">
     <ul class="pagination">
         <li class="page-item">
             <a class="page-link" asp-route-pageno="@prev" asp-route-category="@category" aria-label="Previous">
@@ -88,11 +94,4 @@
             </a>
         </li>
     </ul>
-</nav>
-
-<br />
-<br />
-<Pager current-page="@Model.CurrentPage" 
-        total-pages="@Model.TotalPages" 
-        category="@category">
-</Pager>
+</nav> *@

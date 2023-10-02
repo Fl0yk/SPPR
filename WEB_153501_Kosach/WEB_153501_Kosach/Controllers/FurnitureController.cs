@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using WEB_153501_Kosach.Domain.Entities;
 using WEB_153501_Kosach.Domain.Models;
+using WEB_153501_Kosach.Extensions;
 using WEB_153501_Kosach.Services.FurnitureCategoryService;
 using WEB_153501_Kosach.Services.FurnitureServices;
 
@@ -34,6 +35,11 @@ namespace WEB_153501_Kosach.Controllers
 
             if (!productResponse.Success)
                 return NotFound(productResponse.ErrorMessage);
+
+            if(Request.IsAjaxRequest())
+            {
+                return PartialView("_FurnituriesPartial", productResponse.Data);
+            }
 
             return View("CartView", productResponse.Data);
         }

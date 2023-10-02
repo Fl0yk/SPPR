@@ -18,6 +18,7 @@ namespace WEB_153501_Kosach.IdentityServer
             builder.Services.AddControllers();
 
             builder.Services.AddTransient<IProfileService, ProfileService>();
+            //builder.Services.AddTransient<IProfileService, SampleProfileService>();
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -47,8 +48,8 @@ namespace WEB_153501_Kosach.IdentityServer
                 .AddInMemoryIdentityResources(Config.IdentityResources)
                 .AddInMemoryApiScopes(Config.ApiScopes)
                 .AddInMemoryClients(Config.Clients)
-                .AddAspNetIdentity<ApplicationUser>();
-
+                .AddAspNetIdentity<ApplicationUser>();//.AddProfileService<>();
+            
             builder.Services.AddAuthentication()
                 .AddGoogle(options =>
                 {

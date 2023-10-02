@@ -21,6 +21,7 @@ namespace WEB_153501_Kosach.API.Controllers
         }
 
         // GET: api/Furnitures
+        [Authorize(Roles = "admin")]
         [HttpGet]
         [Route("")]
         [Route("{category}/pageno={pageno:int}/pagesize={pagesize:int}")]
@@ -38,7 +39,7 @@ namespace WEB_153501_Kosach.API.Controllers
 
         // GET: api/Furnitures/5
         [HttpGet("{id:int}")]
-        [Authorize]//(Roles = "admin")]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<ResponseData<Furniture>>> GetFurniture(int id)
         {
             return Ok(await _furnitureService.GetProductByIdAsync(id));
@@ -48,7 +49,7 @@ namespace WEB_153501_Kosach.API.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         
         [HttpPut("{id}")]
-        [Authorize]//(Roles = "admin")]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<ResponseData<Furniture>>> PutFurniture(int id, Furniture furniture)
         {
             if (id != furniture.Id)
