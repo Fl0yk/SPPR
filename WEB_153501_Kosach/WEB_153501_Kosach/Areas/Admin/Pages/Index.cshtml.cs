@@ -37,6 +37,9 @@ namespace WEB_153501_Kosach.Areas.Admin
 
         public async Task<IActionResult> OnGetAsync(int? pageno, string? category)
         {
+            //var u = User;
+            //var c = User.Claims.ToList();
+            //var b = User.Identities.ToList();
             var requestFurnitures = await _furnitureService.GetFurnitureListAsync(category, pageno ?? 1);
             ResponseData<List<FurnitureCategory>> requestCategories = await _categoryService.GetCategoryListAsync();
             

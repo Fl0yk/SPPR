@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WEB_153501_Kosach.API.Data;
 using WEB_153501_Kosach.Domain.Entities;
+using WEB_153501_Kosach.Services.FurnitureCategoryService;
 using WEB_153501_Kosach.Services.FurnitureServices;
 
 namespace WEB_153501_Kosach.Areas.Admin
@@ -17,10 +18,13 @@ namespace WEB_153501_Kosach.Areas.Admin
     public class EditModel : PageModel
     {
         private readonly IFurnitureService _furnitureService;
+        private readonly IFurnitureCategoryService _furnitureCategoryService;
 
-        public EditModel(IFurnitureService service)
+        public EditModel(IFurnitureService service, 
+                        IFurnitureCategoryService categoryService)
         {
             _furnitureService = service;
+            _furnitureCategoryService = categoryService;
         }
 
         [BindProperty]
@@ -31,6 +35,7 @@ namespace WEB_153501_Kosach.Areas.Admin
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
+
             if (id == null || _furnitureService == null)
             {
                 return NotFound();
@@ -53,6 +58,9 @@ namespace WEB_153501_Kosach.Areas.Admin
             {
                 return Page();
             }
+
+            //Furniture.Category = _furnitureCategoryService.GetCategoryListAsync().Result.Data[0];
+            //Furniture.CategoryId = Furniture.Category.Id;
 
             await _furnitureService.UpdateFurnitureAsync(Furniture.Id, Furniture, Image);
 

@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.OAuth.Claims;
 using Microsoft.Extensions.Options;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using WEB_153501_Kosach;
 using WEB_153501_Kosach.Domain.Entities;
 using WEB_153501_Kosach.Services.FurnitureCategoryService;
@@ -43,7 +45,9 @@ builder.Services.AddAuthentication(opt =>
                             opt.TokenValidationParameters.ValidateAudience = false;
                             opt.TokenValidationParameters.ValidTypes =
                                                             new[] { "at+jwt" };
-                        }).AddOpenIdConnect("oidc", options =>
+                            opt.TokenValidationParameters.RoleClaimType = "role";
+                        })
+                        .AddOpenIdConnect("oidc", options =>
                         {
                             options.Authority =
                                     builder.Configuration["InteractiveServiceSettings:AuthorityUrl"];
@@ -51,14 +55,20 @@ builder.Services.AddAuthentication(opt =>
                                     builder.Configuration["InteractiveServiceSettings:ClientId"];
                             options.ClientSecret =
                                     builder.Configuration["InteractiveServiceSettings:ClientSecret"];
+
                             // Получить Claims пользователя
                             options.GetClaimsFromUserInfoEndpoint = true;
                             options.ResponseType = "code";
                             options.ResponseMode = "query";
                             options.SaveTokens = true;
 
-                            options.Scope.Add("roles");
+                            
+
+                            options.Scope.Add("role");
+                            //options.ClaimActions.MapJsonKey("arole", "role", "role");
+                            options.Scope.Add("api_role");
                             options.ClaimActions.MapJsonKey("role", "role", "role");
+                            //options.ClaimActions.Add(new JsonKeyClaimAction("api_role", null, "role"));
                             options.TokenValidationParameters.RoleClaimType = "role";
                         });
 

@@ -1,4 +1,5 @@
 ﻿using Duende.IdentityServer.Models;
+using IdentityModel;
 
 namespace WEB_153501_Kosach.IdentityServer
 {
@@ -7,16 +8,19 @@ namespace WEB_153501_Kosach.IdentityServer
         public static IEnumerable<IdentityResource> IdentityResources =>
             new IdentityResource[]
             {
-            new IdentityResources.OpenId(),
-            new IdentityResources.Profile(),
-            new IdentityResource("roles", new[] { "role" }),
+                new IdentityResources.OpenId(),
+                new IdentityResources.Profile(),
+                new IdentityResource("role", new[] { "role" }),
             };
 
         public static IEnumerable<ApiScope> ApiScopes =>
             new ApiScope[]
             {
-            new ApiScope("api.read"),
-            new ApiScope("api.write"),
+                new ApiScope("api.read"),
+                new ApiScope("api.write"),
+                new ApiScope(name: "api_role",
+                            //displayName: "Write your data.",
+                            userClaims: new[] { "role" })
             };
 
         public static IEnumerable<Client> Clients =>
@@ -45,9 +49,10 @@ namespace WEB_153501_Kosach.IdentityServer
                 RedirectUris = { "https://localhost:7001/signin-oidc" },
                 FrontChannelLogoutUri = "https://localhost:7001/signout-oidc",
                 PostLogoutRedirectUris = { "https://localhost:7001/signout-callback-oidc" },
+                
 
                 //AllowOfflineAccess = true,
-                AllowedScopes = { "openid", "profile", "api.read", "api.write", "roles" }
+                AllowedScopes = { "openid", "profile", "api.read", "api.write", JwtClaimTypes.Role, "api_role" }
             },
             };
     }

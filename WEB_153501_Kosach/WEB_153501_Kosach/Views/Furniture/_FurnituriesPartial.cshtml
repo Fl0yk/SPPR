@@ -1,0 +1,22 @@
+﻿@model ListModel<Furniture>
+@{
+    var request = ViewContext.HttpContext.Request;
+    var returnUrl = request.Path + request.QueryString.ToUriComponent();
+}
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    @foreach (var item in Model.Items)
+    {
+        <div class="col">
+            <div class="card text-center">
+                <img src="@item.Image" class="card-img-top" alt="Hmmm..." width="300" height="220">
+                <div class="card-body">
+                    <h5 class="card-title">@item.Name</h5>
+                    <p class="card-text">@item.Price.ToString("F2") руб.</p>
+                    <a asp-controller="Cart" asp-action="Add" asp-route-id="@item.Id" asp-route-returnurl="@returnUrl"
+                       class="btn btn-outline-primary">Добавить в корзину <i class="fa-solid fa-basket-shopping"></i></a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

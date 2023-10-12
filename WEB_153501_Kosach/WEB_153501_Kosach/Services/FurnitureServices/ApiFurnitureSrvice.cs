@@ -98,9 +98,11 @@ namespace WEB_153501_Kosach.Services.FurnitureServices
 
         public async Task<ResponseData<Furniture>> GetFurnitureByIdAsync(int id)
         {
+            //var claims = new ClaimsIdentity(_httpContext.User.Claims.ToArray());
+            //var us = _httpContext.User;
             var token = await _httpContext.GetTokenAsync("access_token");
             _httpClient.DefaultRequestHeaders.Authorization 
-                            = new AuthenticationHeaderValue("bearer",token);
+                            = new AuthenticationHeaderValue("bearer", token);
 
             var response = await _httpClient.GetAsync(new Uri($"{_httpClient.BaseAddress.AbsoluteUri}furnitures/{id}"));
             if (response.IsSuccessStatusCode)
@@ -150,6 +152,7 @@ namespace WEB_153501_Kosach.Services.FurnitureServices
                 urlString.Append(QueryString.Create("pageSize", _pageSize));
             }
 
+            var us = _httpContext.User.Claims.ToList();
             var token = await _httpContext.GetTokenAsync("access_token");
             _httpClient.DefaultRequestHeaders.Authorization
                             = new AuthenticationHeaderValue("bearer", token);
@@ -188,6 +191,8 @@ namespace WEB_153501_Kosach.Services.FurnitureServices
             var token = await _httpContext.GetTokenAsync("access_token");
             _httpClient.DefaultRequestHeaders.Authorization
                             = new AuthenticationHeaderValue("bearer", token);
+
+            //furniture.CategoryId = 1;
 
             var response = await _httpClient.PutAsJsonAsync(new Uri($"{_httpClient.BaseAddress.AbsoluteUri}furnitures/{id}"),
                                                                                                     furniture,
