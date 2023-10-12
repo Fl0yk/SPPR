@@ -65,9 +65,9 @@ builder.Services.AddAuthentication(opt =>
                             
 
                             options.Scope.Add("role");
-                            options.ClaimActions.MapJsonKey("role", "role", "role");
+                            //options.ClaimActions.MapJsonKey("arole", "role", "role");
                             options.Scope.Add("api_role");
-                            options.ClaimActions.MapJsonKey("api_role", "role", "role");
+                            options.ClaimActions.MapJsonKey("role", "role", "role");
                             //options.ClaimActions.Add(new JsonKeyClaimAction("api_role", null, "role"));
                             options.TokenValidationParameters.RoleClaimType = "role";
                         });
