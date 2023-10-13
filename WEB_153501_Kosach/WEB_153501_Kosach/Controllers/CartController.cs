@@ -27,14 +27,14 @@ namespace WEB_153501_Kosach.Controllers
         {
             _cart.RemoveItems(id);
 
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
         }
 
         public ActionResult ClearAll()
         {
             _cart.ClearAll();
 
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
         }
 
         [Route("[controller]/add/{id:int}")]
