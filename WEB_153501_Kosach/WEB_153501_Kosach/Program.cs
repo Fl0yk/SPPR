@@ -7,6 +7,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using WEB_153501_Kosach;
 using WEB_153501_Kosach.Domain.Entities;
+using WEB_153501_Kosach.Domain.Models;
+using WEB_153501_Kosach.Models;
 using WEB_153501_Kosach.Services.FurnitureCategoryService;
 using WEB_153501_Kosach.Services.FurnitureServices;
 
@@ -18,6 +20,9 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 builder.Services.AddScoped<IFurnitureService, ApiFurnitureService>();
 builder.Services.AddScoped<IFurnitureCategoryService, ApiCategoryService>();
+builder.Services.AddScoped<Cart>(sp => SessionCart.GetCart(sp));
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
 
 //Внедрение клиента для запросов к API
 var uriData = builder.Configuration.GetSection("UriData").Get<UriData>();
@@ -27,6 +32,9 @@ builder.Services.AddHttpClient<IFurnitureService, ApiFurnitureService>(opt =>
 
 builder.Services.AddHttpClient<IFurnitureCategoryService, ApiCategoryService>(opt =>
                                             opt.BaseAddress = new Uri(uriData.ApiUri));
+
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession();
 
 //Внедрение сервисов аунтентификации
 builder.Services.AddHttpContextAccessor();
@@ -95,6 +103,8 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseSession();
 
 app.MapRazorPages().RequireAuthorization();
 

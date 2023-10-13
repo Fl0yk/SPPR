@@ -19,6 +19,8 @@ namespace WEB_153501_Kosach.Controllers
             _furnitureCategoryService = categoryService;
         }
 
+        [Route("Catalog")]
+        [Route("Catalog/{category}")]
         public  async Task<ActionResult> Index(int? pageno, string? category)
         {
             var productResponse = await _furnitureService.GetFurnitureListAsync(category, pageno ?? 1);

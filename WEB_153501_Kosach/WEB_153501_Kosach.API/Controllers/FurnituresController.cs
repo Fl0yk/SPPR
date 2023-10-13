@@ -21,7 +21,7 @@ namespace WEB_153501_Kosach.API.Controllers
         }
 
         // GET: api/Furnitures
-        [Authorize(Roles = "admin")]
+        //[Authorize(Roles = "admin")]
         [HttpGet]
         [Route("")]
         [Route("{category}/pageno={pageno:int}/pagesize={pagesize:int}")]
@@ -39,7 +39,7 @@ namespace WEB_153501_Kosach.API.Controllers
 
         // GET: api/Furnitures/5
         [HttpGet("{id:int}")]
-        [Authorize(Roles = "admin")]
+        [Authorize]
         public async Task<ActionResult<ResponseData<Furniture>>> GetFurniture(int id)
         {
             return Ok(await _furnitureService.GetProductByIdAsync(id));

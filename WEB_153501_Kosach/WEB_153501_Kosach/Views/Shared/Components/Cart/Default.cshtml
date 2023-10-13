@@ -1,4 +1,6 @@
-﻿<a class="navbar-text ms-auto" asp-action="Index" asp-controller="Cart">
-     @ViewBag.Balance руб <i class="fa-solid fa-cart-shopping"></i>
-    (@ViewBag.CountOfProducts)
+﻿@model Cart
+
+<a class="navbar-text ms-auto" asp-action="Index" asp-controller="Cart">
+     @Model.TotalPrice.ToString("F2") руб <i class="fa-solid fa-cart-shopping"></i>
+    (@Model.Count)
 </a>

@@ -1,23 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Build.Framework;
+using WEB_153501_Kosach.Domain.Models;
 
 namespace WEB_153501_Kosach.Components
 {
     public class CartViewComponent : ViewComponent
     {
-        private decimal balance;
-        private int countOfProducts;
+        private readonly Cart _cart;
 
-        public CartViewComponent()
+        public CartViewComponent(Cart cart)
         {
-            balance = 0;
-            countOfProducts = 0;
+            _cart = cart;
         }
 
         public IViewComponentResult Invoke()
         {
-            ViewBag.Balance = balance.ToString("F2");
-            ViewBag.CountOfProducts = countOfProducts;
-            return View();
+            return View(_cart);
         }
     }
 }

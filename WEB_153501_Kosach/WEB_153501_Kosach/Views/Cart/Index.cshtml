@@ -1,0 +1,33 @@
+﻿@model Dictionary<int, CartItem>
+
+@{
+    ViewBag.Title = "View";
+}
+
+<h1>Your cart</h1>
+<p>
+    <a asp-action="ClearAll">Clear all cart</a>
+</p>
+<table class="table">
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <img src="@item.Value.Item.Image" />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Value.Item.Name)
+                </td>
+                <td>
+                    @item.Value.Count
+                </td>
+                <td>
+                    <a asp-action="Delete" asp-route-id="@item.Key">
+                        <i class="fa-solid fa-dumpster"></i>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
