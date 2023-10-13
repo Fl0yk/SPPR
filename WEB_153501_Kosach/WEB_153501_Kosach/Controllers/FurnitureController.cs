@@ -26,14 +26,14 @@ namespace WEB_153501_Kosach.Controllers
             var productResponse = await _furnitureService.GetFurnitureListAsync(category, pageno ?? 1);
             ResponseData<List<FurnitureCategory>> categories = await _furnitureCategoryService.GetCategoryListAsync();
 
+            if (!categories.Success)
+                return NotFound(categories.ErrorMessage);
+
             ViewData["currentCategory"] = categories.Data
                                             .FirstOrDefault(c => c.NormalizedName.Equals(category))?
                                             .Name ?? "Все";
 
-            if (categories.Success)
-            {
-                ViewData["categories"] = categories.Data;
-            }
+            ViewData["categories"] = categories.Data;
 
             if (!productResponse.Success)
                 return NotFound(productResponse.ErrorMessage);

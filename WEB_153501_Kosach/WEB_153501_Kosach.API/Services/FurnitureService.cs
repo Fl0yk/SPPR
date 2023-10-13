@@ -16,15 +16,14 @@ namespace WEB_153501_Kosach.API.Services
         private readonly IHttpContextAccessor _httpContextAccessor;
         private string _imagesPath;
 
-        public FurnitureService(AppDbContext dbContext, 
-                                    IConfiguration configuration,
+        public FurnitureService(AppDbContext dbContext,
                                     IWebHostEnvironment environment,
                                     IHttpContextAccessor httpContextAccessor)
         {
             _dbContext = dbContext;
             _furnitures = dbContext.Furnitures;
             //_url = configuration.GetSection("ApiUrl").Value!;
-            _imagesPath = Path.Combine(environment.WebRootPath, "Images");
+            _imagesPath = Path.Combine(environment?.WebRootPath ?? "", "Images");
             _httpContextAccessor = httpContextAccessor;
         }
 
