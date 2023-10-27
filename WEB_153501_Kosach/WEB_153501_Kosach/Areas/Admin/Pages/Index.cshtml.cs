@@ -1,13 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using WEB_153501_Kosach.API.Data;
 using WEB_153501_Kosach.Domain.Entities;
 using WEB_153501_Kosach.Domain.Models;
 using WEB_153501_Kosach.Services.FurnitureCategoryService;
@@ -37,9 +29,6 @@ namespace WEB_153501_Kosach.Areas.Admin
 
         public async Task<IActionResult> OnGetAsync(int? pageno, string? category)
         {
-            //var u = User;
-            //var c = User.Claims.ToList();
-            //var b = User.Identities.ToList();
             var requestFurnitures = await _furnitureService.GetFurnitureListAsync(category, pageno ?? 1);
             ResponseData<List<FurnitureCategory>> requestCategories = await _categoryService.GetCategoryListAsync();
             
