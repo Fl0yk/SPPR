@@ -1,19 +1,22 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authentication.OAuth.Claims;
-using Microsoft.Extensions.Options;
+using Serilog;
 using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using WEB_153501_Kosach;
-using WEB_153501_Kosach.Domain.Entities;
 using WEB_153501_Kosach.Domain.Models;
+using WEB_153501_Kosach.Middleware;
 using WEB_153501_Kosach.Models;
 using WEB_153501_Kosach.Services.FurnitureCategoryService;
 using WEB_153501_Kosach.Services.FurnitureServices;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
+Log.Logger = new LoggerConfiguration()
+    .CreateBootstrapLogger();
+
+builder.Host.UseSerilog((ctx, lc) => lc
+        .ReadFrom.Configuration(ctx.Configuration));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -80,6 +83,8 @@ builder.Services.AddAuthentication(opt =>
                             options.TokenValidationParameters.RoleClaimType = "role";
                         });
 
+//builder.Services.AddSerilog(Log.Logger);
+
 
 var app = builder.Build();
 
@@ -91,13 +96,10 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-//app.UseCookiePolicy(new CookiePolicyOptions()
-//{
-//    MinimumSameSitePolicy = SameSiteMode.Lax
-//});
-
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
+app.UseMiddleware<RequestLoggingMiddleware>();
 
 app.UseRouting();
 

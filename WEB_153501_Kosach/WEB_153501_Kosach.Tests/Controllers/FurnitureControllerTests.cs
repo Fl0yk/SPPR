@@ -42,7 +42,7 @@ namespace WEB_153501_Kosach.Tests.Controllers
             Assert.Equal((int)HttpStatusCode.NotFound, ((NotFoundObjectResult)result).StatusCode);
         }
 
-        [Fact]
+        [Fact]        
         public void Index_InvalidFurnitureList_ReturnsNotFound()
         {
             _mockCategoryService.Setup(service => service.GetCategoryListAsync().Result)
@@ -97,7 +97,6 @@ namespace WEB_153501_Kosach.Tests.Controllers
                     }
 
                 });
-
 
 
             var result = _controller.Index(1, null).Result;
