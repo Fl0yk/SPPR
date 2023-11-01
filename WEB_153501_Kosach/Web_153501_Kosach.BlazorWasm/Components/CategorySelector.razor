@@ -1,0 +1,58 @@
+﻿@inject IDataService DataService
+
+<!-- выбор категории -->
+<div class="col-2 border-2">
+    <ul class="nav ">
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle"
+               data-bs-toggle="dropdown"
+               href="#"
+               role="button">
+                @SelectedCategory
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                    @* <button class="dropdown-item" @onclick="SelectAll">
+                        Все
+                    </button> *@
+                    <NavLink class="dropdown-item" href="@path">Все</NavLink>
+
+                </li>
+                @foreach (var item in DataService.Categories)
+                {
+                    <li>
+                        @* <button class="dropdown-item" @onclick="(() => SelectCategory(item.NormalizedName))">
+                            @item.Name
+                        </button> *@
+                        <NavLink class="dropdown-item" href="@(path + item.NormalizedName)">@item.Name</NavLink>
+                    </li>
+                }
+            </ul>
+        </li>
+    </ul>
+</div><!-- выбор категории -->
+
+@code {
+    [Parameter]
+    [EditorRequired]
+    public string SelectedCategory { get; set; }
+    //Видите ли, нельзя написать category/@item.Name. Совмещаю разметку и C#
+    private string path = "catalog/";
+
+
+    //Это первый вариант. Тут даже ссылка не менялось, все тут обрабатывалось. Но скорее всего так не надо
+    public async Task SelectAll()
+    {
+        await DataService.GetProductListAsync(null);
+        SelectedCategory = "Все";
+    }
+
+    async Task SelectCategory(string normalizeName)
+    {
+        await DataService.GetProductListAsync(normalizeName);
+
+        SelectedCategory = DataService.Categories
+                        .FirstOrDefault(c =>c.NormalizedName.Equals(normalizeName))?
+                        .Name ?? "Все";
+    }
+}

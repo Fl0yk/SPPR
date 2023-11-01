@@ -33,6 +33,8 @@ namespace WEB_153501_Kosach.Controllers
                                             .FirstOrDefault(c => c.NormalizedName.Equals(category))?
                                             .Name ?? "Все";
 
+            ViewData["category"] = category;
+
             ViewData["categories"] = categories.Data;
 
             if (!productResponse.Success)

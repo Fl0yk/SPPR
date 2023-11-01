@@ -1,4 +1,6 @@
-﻿namespace WEB_153501_Kosach.Middleware
+﻿using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+
+namespace WEB_153501_Kosach.Middleware
 {
     public class RequestLoggingMiddleware
     {
@@ -14,7 +16,15 @@
 
         public async Task Invoke(HttpContext context)
         {
-            await _next(context);
+            try
+            {
+                await _next.Invoke(context);
+            }
+            catch (Exception ex) when (ex.InnerException is OpenIdConnectProtocolException)// when (ex.Message == "access_denied")
+            {
+                //var a = ex;
+                context.Response.Redirect("/");
+            }
 
             if (context.Response.StatusCode < 200 || context.Response.StatusCode >= 300)
             {

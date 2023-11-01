@@ -1,0 +1,53 @@
+﻿@inject IDataService DataService
+@implements IDisposable
+
+<h3>Католог товаров</h3>
+
+@if (DataService.Success)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Название
+                </th>
+                <th>
+                    Информация
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var obj in DataService.ObjectsList)
+            {
+                int ind = obj.Id;
+                <tr>
+                    <td>
+                        @obj.Name @ind
+                    </td>
+                    <td>
+                        <button @onclick="(async () => await ObjSelected.InvokeAsync(ind))">
+                            <span class="oi oi-zoom-in" aria-hidden="true"></span> Подробнее
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    [Parameter]
+    [EditorRequired]
+    public EventCallback<int> ObjSelected { get; set; }
+
+
+    protected override void OnInitialized()
+    {
+        DataService.DataLoaded += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        DataService.DataLoaded -= StateHasChanged;
+    }
+}

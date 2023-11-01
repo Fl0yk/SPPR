@@ -1,0 +1,66 @@
+﻿@inject IDataService DataService
+@implements IDisposable
+
+<nav aria-label="Page navigation">
+    <ul class="pagination">
+        <li class="page-item">
+            <button class="page-link" aria-label="Previous" @onclick="(async () => await SelectPage(prev))">
+                <span aria-hidden="true">&laquo;</span>
+            </button>
+        </li>
+        @for (int i = 1; i <= DataService.TotalPages; i++)
+        {
+            int ind = i;
+            <li class="page-item @(DataService.CurrentPage == ind ? "active" : "")">
+                <button class="page-link" @onclick="(async () => await SelectPage(ind))">
+                    @ind
+                </button>
+            </li>
+        }
+        <li class="page-item">
+            <button class="page-link" aria-label="Next" @onclick="(async () => await SelectPage(next))">
+                <span aria-hidden="true">&raquo;</span>
+            </button>
+        </li>
+    </ul>
+</nav>
+
+@code {
+    [Parameter]
+    [EditorRequired]
+    public string? Category { get; set; }
+
+    int prev;
+
+    int next;
+
+    protected override void OnInitialized()
+    {
+        DataService.DataLoaded += StateHasChanged;
+
+        prev = DataService.CurrentPage == 1 ? 1 : DataService.CurrentPage - 1;
+
+        next = DataService.CurrentPage == DataService.TotalPages
+                                    ? DataService.TotalPages
+                                    : DataService.CurrentPage + 1;
+    }
+
+    public void Dispose()
+    {
+        DataService.DataLoaded -= StateHasChanged;
+    }
+
+    async Task SelectPage(int pageno)
+    {
+        Console.WriteLine(pageno);
+
+        Console.WriteLine(DataService == null ? "null" : "not");
+        await DataService.GetProductListAsync(Category, pageno);
+
+        prev = DataService.CurrentPage == 1 ? 1 : DataService.CurrentPage - 1;
+
+        next = DataService.CurrentPage == DataService.TotalPages
+                                    ? DataService.TotalPages
+                                    : DataService.CurrentPage + 1;
+    }
+}

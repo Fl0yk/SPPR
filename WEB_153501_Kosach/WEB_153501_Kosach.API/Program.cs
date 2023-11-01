@@ -41,6 +41,16 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IFurnitureCategoryService, FurnitureCategoryService>();
 builder.Services.AddScoped<IFurnitureService, FurnitureService>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.WithOrigins("https://localhost:7021")
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
+
 var app = builder.Build();
 
 //DbInitializercs.SeedData(app);
@@ -58,6 +68,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
+app.UseCors();
 
 app.UseAuthentication();
 app.UseAuthorization();
