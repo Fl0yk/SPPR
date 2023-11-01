@@ -1,0 +1,24 @@
+﻿
+@if (Selectedobject is not null)
+{
+    <div class="col" style="width: 350px;">
+        <div class="card text-center">
+            <img src="@Selectedobject.Image" class="card-img-top" alt="Hmmm..." width="300" height="220">
+            <div class="card-body">
+                <h5 class="card-title">@Selectedobject.Name</h5>
+                <p class="card-text">@Selectedobject.Price.ToString("F2") руб.</p>
+                @if (Selectedobject.Category is not null)
+                {
+                    <p>Категория: @Selectedobject.Category.Name</p>
+                }
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    [EditorRequired]
+    public Furniture Selectedobject {get; set; }
+
+}

@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WEB_153501_Kosach.API", "WE
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WEB_153501_Kosach.IdentityServer", "WEB_153501_Kosach.IdentityServer\WEB_153501_Kosach.IdentityServer.csproj", "{3E3A37ED-D9A5-4D91-9C7D-21A6C803C35F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WEB_153501_Kosach.Tests", "WEB_153501_Kosach.Tests\WEB_153501_Kosach.Tests.csproj", "{D67A3DDD-B528-430F-BF6E-DE711B1544E2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WEB_153501_Kosach.Tests", "WEB_153501_Kosach.Tests\WEB_153501_Kosach.Tests.csproj", "{D67A3DDD-B528-430F-BF6E-DE711B1544E2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web_153501_Kosach.BlazorWasm", "Web_153501_Kosach.BlazorWasm\Web_153501_Kosach.BlazorWasm.csproj", "{320BEF24-DA46-4084-9BA7-7D46456C31D2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{D67A3DDD-B528-430F-BF6E-DE711B1544E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D67A3DDD-B528-430F-BF6E-DE711B1544E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D67A3DDD-B528-430F-BF6E-DE711B1544E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{320BEF24-DA46-4084-9BA7-7D46456C31D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{320BEF24-DA46-4084-9BA7-7D46456C31D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{320BEF24-DA46-4084-9BA7-7D46456C31D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{320BEF24-DA46-4084-9BA7-7D46456C31D2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

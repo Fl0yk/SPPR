@@ -152,7 +152,7 @@ namespace WEB_153501_Kosach.Services.FurnitureServices
                 urlString.Append(QueryString.Create("pageSize", _pageSize));
             }
 
-            var us = _httpContext.User.Claims.ToList();
+            //var us = _httpContext.User.Claims.ToList();
             var token = await _httpContext.GetTokenAsync("access_token");
             _httpClient.DefaultRequestHeaders.Authorization
                             = new AuthenticationHeaderValue("bearer", token);

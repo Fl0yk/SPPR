@@ -2,12 +2,12 @@
 
 @{
     ViewBag.Title = "View";
-    
+
     var request = ViewContext.HttpContext.Request;
     var returnUrl = request.Path + request.QueryString.ToUriComponent();
     var categories = ViewData["Categories"] as List<FurnitureCategory>;
 
-    string? category = request.Query["category"].ToString();
+    string? category = ViewData["category"] as string; //request.Query["category"].ToString();
 
     int prev = Model.CurrentPage == 1 ? 1 : Model.CurrentPage - 1;
 
